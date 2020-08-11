@@ -3,10 +3,14 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { SettingsComponent } from './lgame/settings/settings.component';
+import { PlaygroundComponent } from './lgame/playground/playground/playground.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SettingsComponent,
+    PlaygroundComponent
   ],
   imports: [
     BrowserModule,
