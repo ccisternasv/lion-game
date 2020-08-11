@@ -4,11 +4,21 @@ export class RndPosition {
 
     private _min = 0;
     private _max = 1;
+
     constructor(){
 
     }
 
-    genRndInt():Number{
-        return Math.random()+;
+    public set min(minNbr:number){
+        this._min = minNbr;
     }
+
+    public set max(maxNbr:number){
+        this._min = maxNbr;
+    }
+
+    static genRndInt(minNbr:number= 0, maxNbr:number = 1):number{
+        return Math.trunc(Math.random()*maxNbr+minNbr);
+    }
+
 }
