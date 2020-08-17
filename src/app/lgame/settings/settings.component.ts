@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Settings } from './settings';
 
 @Component({
   selector: 'app-settings',
@@ -6,10 +7,27 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
+ 
+  private _settings: Settings;
 
-  constructor() { }
+  constructor() { 
+  }
+
+  public get settings(): Settings {
+    return this._settings;
+  }
+
+  @Input()
+  public set settings(value: Settings) {
+    this._settings = value;
+    this._settings.level = 5;
+  }
 
   ngOnInit() {
+  }
+
+  public saveSettings(){
+
   }
 
 }

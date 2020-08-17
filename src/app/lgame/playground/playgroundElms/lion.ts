@@ -10,20 +10,17 @@ export class Lion extends PlaygroundElm implements Move {
     private _health: number;
     private _rippleFactor: number;
     private _rippleStep: number;
-    private _supportedInst: string[] 
-    
-    constructor(_id:number=0,
+
+    constructor(_id: number = 0,
         _position: Point = null,
-        _size: Size = null,
-        _image: HTMLImageElement = null) {
-        super(_id, _position, _size, "Lion", _image);
-        this.supportedInst = ['up', 'right', 'down', 'left'];
+        _size: Size = null) {
+        super(_id, _position, _size, "Lion");
     }
 
     updatePosition() {
         throw new Error("Method not implemented.");
     }
-    
+
     public get speed(): number {
         return this._speed;
     }
@@ -54,22 +51,35 @@ export class Lion extends PlaygroundElm implements Move {
     public set rippleStep(value: number) {
         this._rippleStep = value;
     }
-    public get supportedInst(): string[] {
-        return this._supportedInst;
+
+    public reactToInstr(instr: string) {
+        //check if instr is supported
+
+        console.log("lion received instr");
+        switch (instr) {
+            case 'up':
+                break;
+            case 'right':
+                break;
+            case 'down':
+                break;
+            case 'left':
+                break;
+            default:
+                break;
+        }
     }
-    public set supportedInst(value: string[]) {
-        this._supportedInst = value;
-    }
-    
-    public updateVelocityByInst(inst:string){
+
+
+    public updateVelocityByInst(inst: string) {
         let supportedInst = false;
 
         return supportedInst;
     }
 
-    public executeCollisionWith(collidingElm:PlaygroundElm){
+    public executeCollisionWith(collidingElm: PlaygroundElm) {
         return true;
     }
 
-    
+
 }

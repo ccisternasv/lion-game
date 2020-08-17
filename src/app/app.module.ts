@@ -4,13 +4,15 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SettingsComponent } from './lgame/settings/settings.component';
-import { PlaygroundComponent } from './lgame/playground/playground/playground.component';
+import { PlaygroundComponent } from './lgame/playground/playground.component';
+import { LgameComponent } from './lgame/lgame/lgame.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SettingsComponent,
-    PlaygroundComponent
+    PlaygroundComponent,
+    LgameComponent
   ],
   imports: [
     BrowserModule,

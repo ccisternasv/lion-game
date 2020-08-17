@@ -15,9 +15,8 @@ export class Rabbit extends PlaygroundElm implements Move {
 
     constructor(_id:number=0,
         _position: Point = null,
-        _size: Size = null,
-        _image: HTMLImageElement = null){
-        super(_id, _position, _size, "Rabbit", _image);
+        _size: Size = null){
+        super(_id, _position, _size, "Rabbit");
         this.lifeCycle = ['searching food', "searching water", "hopeless (no food/ no water)", "trying to escape"];
 
     }
@@ -68,11 +67,10 @@ export class Rabbit extends PlaygroundElm implements Move {
     }
 
     private eat(){
-
+        this.food++;
     }
 
-    isInDanger():boolean{
+    public isInDanger():boolean{
     return true;
     }
-
 }
