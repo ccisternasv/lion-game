@@ -1,0 +1,16 @@
+
+<div id="canvas-wrapper" (keyup)="reactToInstByKey($event)">
+    <canvas #lgamecanvasbg id="lgame-canvas-bg" class="lgame-canvas"></canvas>
+    <canvas #lgamecanvaslakes id="lgame-canvas-lakes" class="lgame-canvas lgame-elms"></canvas>
+    <canvas #lgamecanvascarrots id="lgame-canvas-carrots" class="lgame-canvas lgame-elms"></canvas>
+    <canvas #lgamecanvasrabbits id="lgame-canvas-rabbits" class="lgame-canvas lgame-elms"></canvas>
+    <canvas #lgamecanvaslions id="lgame-canvas-lions" class="lgame-canvas lgame-elms"></canvas>
+    <div id="lgame-controls">
+        <button id="lg-control-left" (click)="reactToInst('left')"><</button>
+        <button id="lg-control-up" (click)="reactToInst('up')">^</button>
+        <button id="lg-control-down" (click)="reactToInst('down')">D</button>
+        <button id="lg-control-right" (click)="reactToInst('right')">></button>
+        <button (click)="play()">PLAY</button>
+</div>
+</div>
+

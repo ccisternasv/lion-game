@@ -51,9 +51,10 @@ export class RndPosition {
     }
 
     public generatePosition():Point{
-        const x = this.genRndInt(this.minWidth, this.maxWidth);
-        const y = this.genRndInt(this.minHeight, this.maxHeight);
-        return new Point(x, y);
+        const point:Point = new Point(0, 0);
+        point.x = this.genRndInt(this.minWidth, this.maxWidth);
+        point.y = this.genRndInt(this.minHeight, this.maxHeight);
+        return point;
     }
 
 }

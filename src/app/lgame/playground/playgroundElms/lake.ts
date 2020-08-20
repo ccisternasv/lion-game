@@ -31,7 +31,7 @@ export class Lake extends PlaygroundElm {
 
     private shrink(): boolean {
         //calculate object center
-        const centerPosition = this.centerPosition();
+        const centerPosition = this.getCenterPosition();
 
         //adjust size:
         this.currentSize.w = Math.trunc(this.currentSize.w * (1 - this.shrinkRate));

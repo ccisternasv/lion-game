@@ -1,0 +1,7 @@
+<app-settings 
+[settings] = settings
+(settingsSaved)="settingsSavedHandler($event)" 
+></app-settings>
+<app-playground [settings] = settings></app-playground>
+
+<button (click)="printSettings()">Print settings</button>

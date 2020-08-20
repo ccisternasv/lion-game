@@ -117,28 +117,23 @@ export class Game {
         this.rabbits = [];
     }
 
-    private removeElemsFromGroup(iterations: number, group: PlaygroundElm[]) {
+    private removeElemsFromGroup(group: PlaygroundElm[]) {
         let groupDrawingRequired = false;
-
-        for (let i = 0; i < iterations; i++) {
-            if (group[i].markForDeletion) {
-                group.splice(group.indexOf(group[i], 1));
-                groupDrawingRequired = true;
-            }
+        let index = -1;
+        while((index = group.findIndex(elm=>elm.markForDeletion == true)) > -1){
+            group.splice(index, 1);
+            groupDrawingRequired = true;
         }
+
         return groupDrawingRequired;
     }
 
     public removeAllElmsMarkedForDeletion() {
-        const totalLakes = this.lakes.length;
-        const totalCarrots = this.carrots.length;
-        const totalRabbits = this.rabbits.length;
-        const totalLions = this.lions.length;
 
-        this.drawingLakesRequired = this.removeElemsFromGroup(totalLakes, this.lakes);
-        this.drawingCarrotsRequired = this.removeElemsFromGroup(totalCarrots, this.carrots);
-        this.drawingRabbitsRequired = this.removeElemsFromGroup(totalRabbits, this.rabbits);
-        this.drawingLionsRequired = this.removeElemsFromGroup(totalLions, this.lions);
+        this.drawingLakesRequired = this.removeElemsFromGroup(this.lakes);
+        this.drawingCarrotsRequired = this.removeElemsFromGroup(this.carrots);
+        this.drawingRabbitsRequired = this.removeElemsFromGroup(this.rabbits);
+        this.drawingLionsRequired = this.removeElemsFromGroup(this.lions);
     }
 
     private createAllElements(): boolean {
@@ -201,6 +196,7 @@ export class Game {
         const maxRndGenerationIterations = 10;
         let rndPositionCounter = 0;
         const rndPositionGenerator = new RndPosition(this.size.w, this.size.h, elmSize);
+
         try {
             while (counter++ < totalElms) {
 

@@ -1,0 +1,37 @@
+ .lgame-canvas{
+    width:100%;
+    height: 100%;
+ } 
+
+.lgame-elms{
+     position: absolute;
+     top:0;
+     border:1px solid blue;
+ }
+
+ #lgame-canvas-bg{
+    background-color:rgba(0,0,0,.2);
+    position: relative;;
+    top:0;
+}
+
+#canvas-wrapper{
+    width:100vw;
+    max-width: 100%;
+    height:100vh;
+    max-height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#lgame-controls{
+    position: absolute;
+    bottom: 12px;
+}
+
+#lgame-controls button{
+    padding:0.5rem;
+}

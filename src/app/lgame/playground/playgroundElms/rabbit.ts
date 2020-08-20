@@ -4,11 +4,13 @@ import { Vector } from '../../lghelpers/vector';
 import { TargetElm } from '../../lghelpers/target-elm';
 import { Point } from '../../lghelpers/point';
 import { Size } from '../../lghelpers/size';
+import { Lion } from './lion';
 
 export class Rabbit extends PlaygroundElm implements Move {
     private _speed: number;
     private _velocity: Vector;
     private _target: TargetElm;
+    private _targetTypes: string[];
     private _lifeCycle: string[];
     private _food: number;
     private _water: number;
@@ -18,7 +20,7 @@ export class Rabbit extends PlaygroundElm implements Move {
         _size: Size = null){
         super(_id, _position, _size, "Rabbit");
         this.lifeCycle = ['searching food', "searching water", "hopeless (no food/ no water)", "trying to escape"];
-
+        this._targetTypes = ["escapePoint", "carrot", "lake", "none"];
     }
     
     public get speed(): number {
@@ -62,6 +64,13 @@ export class Rabbit extends PlaygroundElm implements Move {
         this._water = value;
     }
 
+    public get targetTypes(): string[] {
+        return this._targetTypes;
+    }
+    public set targetTypes(value: string[]) {
+        this._targetTypes = value;
+    }
+
     private drink(){
 
     }
@@ -70,7 +79,24 @@ export class Rabbit extends PlaygroundElm implements Move {
         this.food++;
     }
 
-    public isInDanger():boolean{
+    public isInDanger(lions:Lion[], dangerProximityLevel:number):boolean{
+        //check danger proximity
+        let i = 0;
+        let iteractions = lions.length;
+
     return true;
+    }
+
+    public calcDistanceToElm(target:PlaygroundElm){
+        const targetCenterPosition = target.getCenterPosition();
+        const myCenterPosition = this.getCenterPosition();
+        //distanceToTarget
+        
+
+        return true;
+    }
+
+    public closestElemntFromGroup(group:PlaygroundElm[]){
+
     }
 }

@@ -78,7 +78,7 @@ export class PlaygroundElm {
         this._markForDeletion = value;
     }
 
-    centerPosition() {
+    getCenterPosition() {
         return new Point(this.currentPosition.x + this.currentSize.w / 2,
             this.currentPosition.y + this.currentSize.h / 2);
     }
