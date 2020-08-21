@@ -4,6 +4,7 @@ import { Lion } from './playgroundElms/lion';
 import { Carrot } from './playgroundElms/carrot';
 import { Lake } from './playgroundElms/lake';
 import { Size } from '../lghelpers/size';
+import { Game } from './game';
 
 export class CtxAnimation {
     private _ctxBg: CanvasRenderingContext2D;
@@ -83,6 +84,8 @@ export class CtxAnimation {
         const iterations = lions.length;
         this.clearCanvas(this.ctxLions);
 
+        console.log("drawing lions");
+
         for(index; index<iterations; index++){
             this.ctxLions.drawImage(this._imageLoader.getlion(index),
             lions[index].currentPosition.x, 
@@ -134,6 +137,7 @@ export class CtxAnimation {
         const iterations = lakes.length;
 
         this.clearCanvas(this.ctxLakes);
+        console.log(" clear lakes", iterations);
         
         for(index; index<iterations; index++){
             //dry background
@@ -152,12 +156,24 @@ export class CtxAnimation {
         }
      }
 
-    public draw(lions: Lion[], rabbits: Rabbit[], carrots: Carrot[], lakes: Lake[]) {
+    public draw(game:Game) {
         if(this._imageLoader.imgsLoaded){
-             this.drawLions(lions);
-             this.drawRabbits(rabbits);
-             this.drawCarrots(carrots);
-             this.drawLakes(lakes);
+            if(game.drawingLakesRequired) {
+                this.drawLakes(game.lakes);
+                game.drawingLakesRequired = false;
+            }
+            if(game.drawingCarrotsRequired) {
+                this.drawCarrots(game.carrots);
+                game.drawingCarrotsRequired = false;
+            }
+            if(game.drawingRabbitsRequired) {
+                this.drawRabbits(game.rabbits);
+                game.drawingRabbitsRequired= false;
+            }
+            if(game.drawingLionsRequired) {
+                this.drawLions(game.lions);
+                game.drawingLionsRequired =false;
+            }
             return true;
         }
         else{

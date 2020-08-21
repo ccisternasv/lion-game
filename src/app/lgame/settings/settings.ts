@@ -1,4 +1,5 @@
 import { Player } from './player';
+import { Lion } from '../playground/playgroundElms/lion';
 
 export class Settings {
     private _nbrOfCarrots: number;
@@ -131,6 +132,18 @@ export class Settings {
         this.nbrOfLions =1;
         this.nbrOfLakes = 2;
         this.nbrOfRabbits = 3;
+    }
+
+    public deleteLionFromPlayer(lion:Lion){
+        const index = this.players.findIndex(player=> player.lion == lion);
+        
+        if(index >-1){
+            this.players[index].lion = null;
+        }
+    }
+
+    public reactToKeyInstr(instr:string){
+        this.players.forEach(player => player.reactToKeyInstr(instr));
     }
     
 }

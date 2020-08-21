@@ -39,6 +39,11 @@ export class Game {
         this._elementsCounter = 0;
         this.size = size;
 
+        this.drawingLakesRequired = true;
+        this.drawingCarrotsRequired = true;
+        this.drawingRabbitsRequired =true;
+        this.drawingLionsRequired = true;
+
         this.createAllElements();
     }
 
@@ -120,20 +125,32 @@ export class Game {
     private removeElemsFromGroup(group: PlaygroundElm[]) {
         let groupDrawingRequired = false;
         let index = -1;
+
         while((index = group.findIndex(elm=>elm.markForDeletion == true)) > -1){
+            console.log("DELETING...");
+            if(group[index].type = "Lion"){
+                this.settings.deleteLionFromPlayer(<Lion>(group[index]));
+            }
             group.splice(index, 1);
-            groupDrawingRequired = true;
+            if(!groupDrawingRequired) groupDrawingRequired = true;
         }
 
         return groupDrawingRequired;
     }
 
     public removeAllElmsMarkedForDeletion() {
-
-        this.drawingLakesRequired = this.removeElemsFromGroup(this.lakes);
-        this.drawingCarrotsRequired = this.removeElemsFromGroup(this.carrots);
-        this.drawingRabbitsRequired = this.removeElemsFromGroup(this.rabbits);
-        this.drawingLionsRequired = this.removeElemsFromGroup(this.lions);
+        if(this.removeElemsFromGroup(this.lakes)){
+            this.drawingLakesRequired = true;
+        }
+        if(this.removeElemsFromGroup(this.carrots)){
+            this.drawingCarrotsRequired = true;
+        }
+        if(this.removeElemsFromGroup(this.rabbits)){
+            this.drawingRabbitsRequired = true;
+        }
+        if(this.removeElemsFromGroup(this.lions)){
+            this.drawingLionsRequired = true;
+        }
     }
 
     private createAllElements(): boolean {

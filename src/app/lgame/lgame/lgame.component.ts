@@ -38,7 +38,7 @@ export class LgameComponent implements OnInit {
   @HostListener('document:keyup',['$event'])
   reactToInstByKey(keyInput:KeyboardEvent){
     const instr = keyInput.key;
-    this.settings.players.forEach(player => player.reactToKeyInstr(instr));
+    this.settings.reactToKeyInstr(instr);
   }
 
 }

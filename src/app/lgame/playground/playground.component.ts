@@ -28,10 +28,14 @@ export class PlaygroundComponent implements OnInit {
 
   private _game: Game;
   private _context: CtxAnimation;
+  private _drawing: boolean;
+
+  private _requestedAnimationFrameId:number;
 
   constructor() {
     this._game = null;
     this._context = null;
+    this.drawing = true;
   }
 @Input("settings")
   public get settings(): Settings {
@@ -41,23 +45,39 @@ export class PlaygroundComponent implements OnInit {
   public set settings(value: Settings) {
     this._settings = value;
   }
+  public get drawing(): boolean {
+    return this._drawing;
+  }
+  public set drawing(value: boolean) {
+    this._drawing = value;
+  }
 
   play(){
-      this.draw();
+      this.animate();
   }
   
   draw(){
+    if(this.drawing) {
+          this._game.removeAllElmsMarkedForDeletion();
+          this._context.draw(this._game);
+          this._requestedAnimationFrameId = window.requestAnimationFrame(this.draw.bind(this));
+        }
+         else{
+           this.cancelAnimationFrame();
+         }
+      }
 
-
-
+  public animate(){
     this._context.ready.then(()=>{
-      this._context.draw(
-        this._game.lions,
-        this._game.rabbits,
-        this._game.carrots,
-        this._game.lakes
-      );
+      this.draw();
+      window.setTimeout(()=> this._game.lions[0].markForDeletion=true, 1000);
+      window.setTimeout(()=> this.cancelAnimationFrame(), 5000);
+
     });
+  }
+
+  private cancelAnimationFrame(){
+    window.cancelAnimationFrame(this._requestedAnimationFrameId);
   }
 
   ngAfterViewInit() {
@@ -73,7 +93,7 @@ export class PlaygroundComponent implements OnInit {
 
     this._context = new CtxAnimation(ctxBg, ctxLakes, ctxCarrots, ctxRabbits, ctxLions, canvasSize);
     this._context.ready.then(()=>{
-      this.draw();
+      this.animate();
     });
   }
 
