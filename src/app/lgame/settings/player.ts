@@ -45,14 +45,14 @@ export class Player {
 
     public reactToKeyInstr(key:string){
         const instr = this.keyboard.getInstrFromKey(key);
-        console.log("Instr received in Player", instr, "KEY:", key);
-        console.log("LIon exist/: ", this.lion);
          if(instr != "not supported" && this.lion){
              this.lion.reactToInstr(instr);
          }
     }
 
     public reactToBtnInstr(instr:string){
-
+        if(instr != "not supported" && this.lion){
+            this.lion.reactToInstr(instr);
+        }
     }
 }

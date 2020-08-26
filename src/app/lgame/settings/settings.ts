@@ -128,14 +128,14 @@ export class Settings {
     }
 
     private setDefaultValues(){
-        this.nbrOfCarrots = 5;
+        this.nbrOfCarrots = 1;
         this.nbrOfLions =1;
-        this.nbrOfLakes = 2;
-        this.nbrOfRabbits = 3;
+        this.nbrOfLakes = 1;
+        this.nbrOfRabbits = 1;
     }
 
-    public deleteLionFromPlayer(lion:Lion){
-        const index = this.players.findIndex(player=> player.lion == lion);
+    public deleteLionFromPlayer(lionId:number){
+        const index = this.players.findIndex(player=> player.lion.id == lionId);
         
         if(index >-1){
             this.players[index].lion = null;
@@ -144,6 +144,10 @@ export class Settings {
 
     public reactToKeyInstr(instr:string){
         this.players.forEach(player => player.reactToKeyInstr(instr));
+    }
+
+    public reactToBtnInstr(instr:string){
+        this.players.forEach(player => player.reactToBtnInstr(instr));
     }
     
 }

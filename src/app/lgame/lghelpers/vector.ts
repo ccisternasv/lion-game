@@ -38,4 +38,9 @@ export class Vector {
                 break;
         }    
     }
+
+    public update(vX:number, vY:number){
+        this.vX = vX;
+        this.vY = vY;
+    }
 }

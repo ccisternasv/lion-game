@@ -8,10 +8,11 @@ export class PlaygroundElm {
     private _initialPosition: Point;
     private _initialSize: Size;
     private _currentSize: Size;
-    private _type: String;
+    private _type: string;
     private _drawingRequired: boolean;
     private _markForDeletion: boolean;
-
+    private _moves: boolean;
+    private _collitionDetected: boolean;
 
     constructor(_id: number = 0,
         _position: Point = null,
@@ -21,7 +22,8 @@ export class PlaygroundElm {
             this.initialPosition = _position;
             this.initialSize = _size;
             this.type = _type;
-            this.drawingRequired = false;
+            this.drawingRequired = true;
+            this.moves = false;
     }
 
     public get id(): number {
@@ -59,10 +61,10 @@ export class PlaygroundElm {
     public set currentSize(value: Size) {
         this._currentSize = value;
     }
-    public get type(): String {
+    public get type(): string {
         return this._type;
     }
-    public set type(value: String) {
+    public set type(value: string) {
         this._type = value;
     }
     public get drawingRequired(): boolean {
@@ -77,9 +79,33 @@ export class PlaygroundElm {
     public set markForDeletion(value: boolean) {
         this._markForDeletion = value;
     }
-
-    getCenterPosition() {
-        return new Point(this.currentPosition.x + this.currentSize.w / 2,
-            this.currentPosition.y + this.currentSize.h / 2);
+    public get moves(): boolean {
+        return this._moves;
     }
+    public set moves(value: boolean) {
+        this._moves = value;
+    }
+    public get collitionDetected(): boolean {
+        return this._collitionDetected;
+    }
+    public set collitionDetected(value: boolean) {
+        this._collitionDetected = value;
+        this.update();
+    }
+    getCenterOfCurrentPosition() {
+        return new Point(Math.round(this.currentPosition.x + this.currentSize.w / 2),
+            Math.round(this.currentPosition.y + this.currentSize.h / 2));
+    }
+
+    //x1, y1, x2, y2
+    getCurrentPositionMatrix():number[]{
+        return [this.currentPosition.x, this.currentPosition.y, 
+            this.currentPosition.x + this.currentSize.w, this.currentPosition.y + this.currentSize.h];
+    }
+
+    update(){
+        this.drawingRequired =true;
+        console.log("collision type: ", this.type, " mark for REDRAW: ", this.drawingRequired);
+    }
+
 }

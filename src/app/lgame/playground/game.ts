@@ -90,7 +90,7 @@ export class Game {
         this._size = value;
     }
 
-    public get drawingLakesRequired(): boolean {
+    public get drawingLakesRequired(): boolean {       
         return this._drawingLakesRequired;
     }
     public set drawingLakesRequired(value: boolean) {
@@ -112,6 +112,9 @@ export class Game {
         return this._drawingLionsRequired;
     }
     public set drawingLionsRequired(value: boolean) {
+        if(!value) {
+            this.lions.forEach(elm=> elm.drawingRequired = false);
+        }
         this._drawingLionsRequired = value;
     }
 
@@ -127,11 +130,17 @@ export class Game {
         let index = -1;
 
         while((index = group.findIndex(elm=>elm.markForDeletion == true)) > -1){
-            console.log("DELETING...");
-            if(group[index].type = "Lion"){
-                this.settings.deleteLionFromPlayer(<Lion>(group[index]));
-            }
+            const elemType = group[index].type;
+            const elemId = group[index].id;
+            
+            //before a lion is removed, it needs to be removed from the player.
+            if(elemType == "Lion") this.settings.deleteLionFromPlayer(elemId);
+
             group.splice(index, 1);
+
+            //each time that a carrot is deleted, a new one is added to the playground
+            if (elemType == "Carrot") this.addCarrot();
+            
             if(!groupDrawingRequired) groupDrawingRequired = true;
         }
 
@@ -230,7 +239,7 @@ export class Game {
                 arr.push(playgroundElem);
             }
         } catch (error) {
-            console.error("unable to generate elms");
+            console.error("unable to generate elms", error);
         }
 
         return false;
@@ -244,6 +253,52 @@ export class Game {
                 CollisionDetection.collidesWithElemInArray(elem, this.rabbits);
         }
         return false;
+    }
+
+    //only object that implement the interface move can trigger a collition
+    //therefore only lions and rabbits are evaluated
+    public checkCollisions(){
+        this.rabbits.forEach(rabbit => {
+            this.lakes.forEach(lake=>{
+                if(CollisionDetection.objectsCollision(rabbit, lake)){
+                    lake.collitionDetected = true;
+                };
+            });
+            this.carrots.forEach(carrot=>{
+                if(CollisionDetection.objectsCollision(rabbit, carrot)){
+                    carrot.collitionDetected = true;
+                };
+            });
+        });
+
+        this.lions.forEach(lion => {
+            this.lakes.forEach(lake=>{
+                if(CollisionDetection.objectsCollision(lion, lake)){
+                    lake.collitionDetected = true;
+                };
+            });
+            this.carrots.forEach(carrot=>{
+                if(CollisionDetection.objectsCollision(lion, carrot)){
+                    carrot.collitionDetected = true;
+                };
+            });
+            this.rabbits.forEach(rabbit=>{
+                if(CollisionDetection.objectsCollision(lion, rabbit)){
+                    rabbit.collitionDetected = true;
+                };
+            });
+        });
+    }
+
+    public updatePosition():void{
+        this.lions.forEach(lion=> lion.updatePosition(this.size));
+        this.rabbits.forEach(lion=> lion.updatePosition(this.size));
+    }
+
+    public updateRabbitsTarget(){
+        this.rabbits.forEach(
+            rabbit=> rabbit.updateTarget(this.lakes, this.carrots, this.lions)
+        );
     }
 
     pause() {
@@ -284,4 +339,30 @@ export class Game {
         )
         return printables;
     }
+
+    public updateDrawingRequirement():void{
+        if(!this.drawingLakesRequired)
+        this.drawingLakesRequired = this.lakes.some(elm=>{
+            return elm.markForDeletion == true || elm.drawingRequired});
+
+        if(!this.drawingCarrotsRequired)
+        this.drawingCarrotsRequired = this.carrots.some(elm=>{
+            return elm.markForDeletion == true || elm.drawingRequired});
+   
+        if(!this.drawingRabbitsRequired)
+        this.drawingRabbitsRequired = this.rabbits.some(elm=>{
+            return elm.markForDeletion == true || elm.drawingRequired});
+
+        if(!this.drawingLionsRequired)
+        this.drawingLionsRequired = this.lions.some(elm=>{
+            return elm.markForDeletion == true || elm.drawingRequired});
+
+    }
+
+    private addCarrot(){
+        if(this.carrots.length < this.settings.nbrOfCarrots ){
+            this.createGroupOfElems('Carrot', this.settings.nbrOfCarrots, new Size(50, 50), this.carrots);
+        }
+    }
+
 }

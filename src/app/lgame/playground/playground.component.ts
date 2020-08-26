@@ -4,6 +4,7 @@ import { Settings } from '../settings/settings';
 import { CtxAnimation } from './ctx-animation';
 import { Size } from '../lghelpers/size';
 import { Point } from '../lghelpers/point';
+import { Rect } from '../lghelpers/rect';
 
 @Component({
   selector: 'app-playground',
@@ -24,19 +25,22 @@ export class PlaygroundComponent implements OnInit {
   lgamecanvaslions: ElementRef<HTMLCanvasElement>;
 
   private _settings: Settings;
-
-
   private _game: Game;
   private _context: CtxAnimation;
   private _drawing: boolean;
 
   private _requestedAnimationFrameId:number;
+  private animationStartTime:any;
+  private animationIterations:number;
+
 
   constructor() {
     this._game = null;
     this._context = null;
     this.drawing = true;
+    this.animationIterations = 0;
   }
+  
 @Input("settings")
   public get settings(): Settings {
     return this._settings;
@@ -56,9 +60,21 @@ export class PlaygroundComponent implements OnInit {
       this.animate();
   }
   
-  draw(){
-    if(this.drawing) {
+  draw(timeStamp){
+    let timeElapsed = 0;
+
+    if(this.animationStartTime == undefined){
+      this.animationStartTime = timeStamp;
+    }
+
+    timeElapsed = timeStamp - this.animationStartTime;
+    
+    //if(this.drawing && this.animationIterations++ < 4) {
+      if(this.drawing) {
           this._game.removeAllElmsMarkedForDeletion();
+          this._game.updateRabbitsTarget();
+          this._game.updatePosition();
+          this._game.checkCollisions();
           this._context.draw(this._game);
           this._requestedAnimationFrameId = window.requestAnimationFrame(this.draw.bind(this));
         }
@@ -69,9 +85,9 @@ export class PlaygroundComponent implements OnInit {
 
   public animate(){
     this._context.ready.then(()=>{
-      this.draw();
-      window.setTimeout(()=> this._game.lions[0].markForDeletion=true, 1000);
-      window.setTimeout(()=> this.cancelAnimationFrame(), 5000);
+      this.draw(window.performance.now());
+    //  window.setTimeout(()=> this._game.lions[0].markForDeletion=true, 1000);
+    //  window.setTimeout(()=> this.cancelAnimationFrame(), 5000);
 
     });
   }
@@ -114,8 +130,8 @@ export class PlaygroundComponent implements OnInit {
     this.lgamecanvaslions.nativeElement.height=size.h;
   }
 
-  reactToInst(instr:string){
-    console.log(instr);
+  reactToBtnInst(instr:string){
+    this.settings.reactToBtnInstr(instr);
   }
 
   ngOnInit() {

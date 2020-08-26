@@ -5,7 +5,7 @@ import { Size } from '../../lghelpers/size';
 export class Lake extends PlaygroundElm {
 
     private _shrinkRate: number;
-    private _collitionDetected: boolean;
+
 
     constructor(_id: number = 0,
         _position: Point = null,
@@ -22,16 +22,10 @@ export class Lake extends PlaygroundElm {
             this._shrinkRate = value;
         }
     }
-    public get collitionDetected(): boolean {
-        return this._collitionDetected;
-    }
-    public set collitionDetected(value: boolean) {
-        this._collitionDetected = value;
-    }
 
     private shrink(): boolean {
         //calculate object center
-        const centerPosition = this.getCenterPosition();
+        const centerPosition = this.getCenterOfCurrentPosition();
 
         //adjust size:
         this.currentSize.w = Math.trunc(this.currentSize.w * (1 - this.shrinkRate));
@@ -71,17 +65,17 @@ export class Lake extends PlaygroundElm {
     }
 
     public update():boolean{
-        if(this.collitionDetected){
-            this.shrink();
-            this.drawingRequired = true;
-            return true;
-        }
-
+        
+        super.update();
         if(this.getWaterLevel()< 10){
             this.markForDeletion = true;
-            this.drawingRequired =true;
+            
         }
 
+        if(this.collitionDetected){
+            this.shrink();
+            return true;
+        }
         return false;
     }
 }

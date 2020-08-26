@@ -92,16 +92,16 @@ export class TargetElm {
         this._reftargetPosition = value;
     }
 
-    public calculateAlphaAngle(): number {
-        return Math.tan(this.dy / this.dx);
-    }
+    // public calculateAlphaAngle(): number {
+    //     return Math.tan(this.dy / this.dx);
+    // }
 
-    public invertTargetPosition(screenSize:Size, objRefSize:Size):Point {
-        this.targetPosition = new Point();
-        this.targetPosition.x = this.refPosition.x + this.dx;
-        this.targetPosition.y = this.refPosition.y + this.dy;
-        const maxX = screenSize.w-objRefSize.w;
-        const maxY = screenSize.h-objRefSize.h;
-        return this.targetPosition.assestCoordinate(0,0, maxX, maxY, this.slope, this.yIntercept);
-    }
+    // public invertTargetPosition(screenSize:Size, objRefSize:Size):Point {
+    //     this.targetPosition = new Point();
+    //     this.targetPosition.x = this.refPosition.x + this.dx;
+    //     this.targetPosition.y = this.refPosition.y + this.dy;
+    //     const maxX = screenSize.w-objRefSize.w;
+    //     const maxY = screenSize.h-objRefSize.h;
+    //     return this.targetPosition.assestCoordinate(0,0, maxX, maxY, this.slope, this.yIntercept);
+    // }
 }

@@ -77,37 +77,32 @@ export class Point {
         return overMaxX || overMaxY || underMinX || underMinY;
     }
 
-    private getXOfY(slope:number, yIntercept:number) {
-        return Math.round((this.y - yIntercept) / slope);
-    }
 
-    private getYOfX(slope:number, yIntercept:number) {
-        return Math.round(slope * this.x + yIntercept);
-    }
 
     private correctCoordinate(minX:number, minY:number, maxX:number, maxY:number, slope:number, yIntercept:number, verificate:string): Point {
         const point:Point = new Point(NaN, NaN);
 
-        switch (verificate) {
-            case 'minX':
-                point.x = minX;
-                point.y = point.getYOfX(slope, yIntercept);
-                break;
-            case 'minY':
-                point.x = minY;
-                point.y = point.getXOfY(slope, yIntercept);
-                break;
-            case 'maxX':
-                point.x = maxX;
-                point.y = point.getYOfX(slope, yIntercept);
-                break;
-            case 'maxY':
-                point.x = maxY;
-                point.y = point.getXOfY(slope, yIntercept);
-                break;
-            default:
-                break;
-        }
+        //TODO: fix
+        // switch (verificate) {
+        //     case 'minX':
+        //         point.x = minX;
+        //         point.y = point.getYOfX(point.x);
+        //         break;
+        //     case 'minY':
+        //         point.y = minY;
+        //         point.x = point.getXOfY(point.y);
+        //         break;
+        //     case 'maxX':
+        //         point.x = maxX;
+        //         point.y = point.getYOfX(point.x);
+        //         break;
+        //     case 'maxY':
+        //         point.x = maxY;
+        //         point.y = point.getXOfY(point.x);
+        //         break;
+        //     default:
+        //         break;
+        // }
 
         return point;
     }
