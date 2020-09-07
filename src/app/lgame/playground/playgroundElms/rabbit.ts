@@ -17,8 +17,8 @@ export class Rabbit extends PlaygroundElm implements Move {
     private _targetTypes: string[];
     private _lifeCycle: string[];
     private _goal: string;
-
-    private _food: number;
+    private _direction: number;
+    private _foodCounter: number;
     private _water: number;
 
     constructor(_id:number=0,
@@ -30,6 +30,7 @@ export class Rabbit extends PlaygroundElm implements Move {
         this.moves = true;
         this.targetPosition = null;
         this.speed = 1;
+        this.foodCounter = 0;
     }
     
     public get speed(): number {
@@ -72,11 +73,11 @@ export class Rabbit extends PlaygroundElm implements Move {
     public set lifeCycle(value: string[]) {
         this._lifeCycle = value;
     }
-    public get food(): number {
-        return this._food;
+    public get foodCounter(): number {
+        return this._foodCounter;
     }
-    public set food(value: number) {
-        this._food = value;
+    public set foodCounter(value: number) {
+        this._foodCounter = value;
     }
     public get water(): number {
         return this._water;
@@ -98,13 +99,19 @@ export class Rabbit extends PlaygroundElm implements Move {
     public set goal(value: string) {
         this._goal = value;
     }
+    public get direction(): number {
+        return this._direction;
+    }
+    public set direction(value: number) {
+        this._direction = value;
+    }
 
     private drink(){
 
     }
 
     private eat(){
-        this.food++;
+        this.foodCounter++;
     }
 
     public isInDanger(lions:Lion[], dangerProximityLevel:number):boolean{
@@ -219,6 +226,19 @@ export class Rabbit extends PlaygroundElm implements Move {
         super.update();
     }
 
+    public executeCollisionWith(elemType: string) {
+
+        switch(elemType){
+            case "Lake":
+                break;
+            case "Carrot":
+                this.eat();
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
 
 }
 

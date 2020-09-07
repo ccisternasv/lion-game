@@ -22,8 +22,8 @@ export class CtxAnimation {
         ctxCarrots: CanvasRenderingContext2D,
         ctxRabbits: CanvasRenderingContext2D,
         ctxLions: CanvasRenderingContext2D,
-        canvasSize:Size
-        ) {
+        canvasSize: Size
+    ) {
         this.ctxBg = ctxBg;
         this.ctxLakes = ctxLakes;
         this.ctxCarrots = ctxCarrots;
@@ -31,7 +31,7 @@ export class CtxAnimation {
         this.ctxLions = ctxLions;
         this.canvasSize = canvasSize;
 
-        this.ready = new Promise((resolve, reject)=>{
+        this.ready = new Promise((resolve, reject) => {
 
             this._imageLoader = new ImagesLoader();
             resolve(this._imageLoader.loadImages())
@@ -50,7 +50,7 @@ export class CtxAnimation {
     }
     public set ctxLakes(value: CanvasRenderingContext2D) {
         this._ctxLakes = value;
-    }    
+    }
     public get ctxCarrots(): CanvasRenderingContext2D {
         return this._ctxCarrots;
     }
@@ -75,8 +75,8 @@ export class CtxAnimation {
     public set canvasSize(value: Size) {
         this._canvasSize = value;
     }
-    private clearCanvas(context:CanvasRenderingContext2D){
-        context.clearRect(0,0,this.canvasSize.w, this.canvasSize.h);
+    private clearCanvas(context: CanvasRenderingContext2D) {
+        context.clearRect(0, 0, this.canvasSize.w, this.canvasSize.h);
     }
 
     private drawLions(lions: Lion[]): void {
@@ -84,16 +84,20 @@ export class CtxAnimation {
         const iterations = lions.length;
         this.clearCanvas(this.ctxLions);
 
-        for(index; index<iterations; index++){
+        for (index; index < iterations; index++) {
             const lion = lions[index];
 
-            this.ctxLions.drawImage(this._imageLoader.getlion(index),
-            lion.currentPosition.x, 
-            lion.currentPosition.y,
-            lion.initialSize.w,
-            lion.initialSize.h);
+            this.ctxLions.drawImage(this._imageLoader.getlion(index, lion.direction),
+                lion.currentPosition.x,
+                lion.currentPosition.y,
+                lion.currentSize.w,
+                lion.currentSize.h);
 
             lion.drawingRequired = false;
+
+            this.ctxLions.fillText(lion.direction.toString(),
+            lion.currentPosition.x,
+             lion.currentPosition.y);
             // if(lions[index].collides){
             //     console.log(lions[index].collides);
             //     this._ctxBg.beginPath();
@@ -107,42 +111,41 @@ export class CtxAnimation {
         let index = 0;
         const iterations = rabbits.length;
         this.clearCanvas(this.ctxRabbits);
- 
-        for(index; index<iterations; index++){
+
+        for (index; index < iterations; index++) {
             const rabbit = rabbits[index];
             this.ctxRabbits.drawImage(this._imageLoader.rabbit,
-                rabbit.currentPosition.x, 
+                rabbit.currentPosition.x,
                 rabbit.currentPosition.y,
                 rabbit.initialSize.w,
                 rabbit.initialSize.h);
 
-                 if(rabbit.targetPosition){
-                    this.ctxRabbits.fillRect(rabbit.targetPosition.x, rabbit.targetPosition.y, 10, 10);
-                 this.ctxRabbits.fillText(rabbit.id.toString(), rabbit.targetPosition.x, rabbit.targetPosition.y);
+            if (rabbit.targetPosition) {
+                this.ctxRabbits.fillRect(rabbit.targetPosition.x, rabbit.targetPosition.y, 10, 10);
+                this.ctxRabbits.fillText(`id: ${rabbit.id.toString()}`, rabbit.targetPosition.x, rabbit.targetPosition.y);
 
-                 }
+            }
 
-                 this.ctxRabbits.fillText(rabbit.id.toString(), rabbit.currentPosition.x, rabbit.currentPosition.y);
-                 rabbit.drawingRequired = false;
+            this.ctxRabbits.fillText(`id: ${rabbit.id.toString()}, carrots: ${rabbit.foodCounter}`, rabbit.currentPosition.x, rabbit.currentPosition.y);
+            rabbit.drawingRequired = false;
         }
 
-     }
+    }
 
     private drawCarrots(carrots: Carrot[]): void {
         let index = 0;
         const iterations = carrots.length;
-                
+
         this.clearCanvas(this.ctxCarrots);
-        console.log("clear carrot canvas ", iterations);
- 
-        for(index; index<iterations; index++){
+
+        for (index; index < iterations; index++) {
             const carrot = carrots[index];
 
             this.ctxCarrots.drawImage(this._imageLoader.carrot,
-            carrot.currentPosition.x, 
-            carrot.currentPosition.y,
-            carrot.initialSize.w,
-            carrot.initialSize.h);
+                carrot.currentPosition.x,
+                carrot.currentPosition.y,
+                carrot.initialSize.w,
+                carrot.initialSize.h);
 
             carrot.drawingRequired = false;
         }
@@ -153,51 +156,51 @@ export class CtxAnimation {
         const iterations = lakes.length;
 
         this.clearCanvas(this.ctxLakes);
-        
-        for(index; index<iterations; index++){
+
+        for (index; index < iterations; index++) {
             //dry background
             const lake = lakes[index];
             this.ctxLakes.drawImage(
                 this._imageLoader.lakeBg,
-                lake.currentPosition.x, 
-                lake.currentPosition.y, 
-                lake.currentSize.w,
-                lake.currentSize.h);
-            this.ctxLakes.drawImage(
-                this._imageLoader.lake,
-                lake.initialPosition.x, 
-                lake.initialPosition.y, 
+                lake.initialPosition.x,
+                lake.initialPosition.y,
                 lake.initialSize.w,
                 lake.initialSize.h);
+            this.ctxLakes.drawImage(
+                this._imageLoader.lake,
+                lake.currentPosition.x,
+                lake.currentPosition.y,
+                lake.currentSize.w,
+                lake.currentSize.h);
 
-                lake.drawingRequired = false;
+                console.log(" lake: ", lake);
+            lake.drawingRequired = false;
         }
-     }
+    }
 
-    public draw(game:Game) {
-        if(this._imageLoader.imgsLoaded){
+    public draw(game: Game) {
+        if (this._imageLoader.imgsLoaded) {
             game.updateDrawingRequirement();
 
-            if(game.drawingLakesRequired) {
+            if (game.drawingLakesRequired) {
                 this.drawLakes(game.lakes);
                 game.drawingLakesRequired = false;
             }
-            if(game.drawingCarrotsRequired) {
-                console.log("ctx-animation carrot");
+            if (game.drawingCarrotsRequired) {
                 this.drawCarrots(game.carrots);
-                game.drawingCarrotsRequired =false;
+                game.drawingCarrotsRequired = false;
             }
-            if(game.drawingRabbitsRequired) {
+            if (game.drawingRabbitsRequired) {
                 this.drawRabbits(game.rabbits);
                 game.drawingRabbitsRequired = false;
             }
-            if(game.drawingLionsRequired) {
+            if (game.drawingLionsRequired) {
                 this.drawLions(game.lions);
                 game.drawingLionsRequired = false;
             }
             return true;
         }
-        else{
+        else {
             console.error("error!", this._imageLoader);
             return false;
         }

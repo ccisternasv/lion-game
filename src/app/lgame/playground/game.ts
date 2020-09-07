@@ -170,7 +170,7 @@ export class Game {
             do {
                 rebootsCounter++;
                 this.clearAllElements();
-                if (this.createGroupOfElems('Lake', this.settings.nbrOfLakes, new Size(50, 50), this.lakes)) { continue; };
+                if (this.createGroupOfElems('Lake', this.settings.nbrOfLakes, new Size(400, 400), this.lakes)) { continue; };
                 if (this.createGroupOfElems('Carrot', this.settings.nbrOfCarrots, new Size(50, 50), this.carrots)) { continue; };
                 if (this.createGroupOfElems('Rabbit', this.settings.nbrOfRabbits, new Size(50, 50), this.rabbits)) { continue; };
                 if (this.createGroupOfElems('Lion', this.settings.nbrOfLions, new Size(50, 50), this.lions)) { continue; };
@@ -255,41 +255,24 @@ export class Game {
         return false;
     }
 
-    //only object that implement the interface move can trigger a collition
-    //therefore only lions and rabbits are evaluated
-    public checkCollisions(){
-        this.rabbits.forEach(rabbit => {
-            this.lakes.forEach(lake=>{
-                if(CollisionDetection.objectsCollision(rabbit, lake)){
-                    lake.collitionDetected = true;
-                };
-            });
-            this.carrots.forEach(carrot=>{
-                if(CollisionDetection.objectsCollision(rabbit, carrot)){
-                    carrot.collitionDetected = true;
-                };
-            });
-        });
-
-        this.lions.forEach(lion => {
-            this.lakes.forEach(lake=>{
-                if(CollisionDetection.objectsCollision(lion, lake)){
-                    lake.collitionDetected = true;
-                };
-            });
-            this.carrots.forEach(carrot=>{
-                if(CollisionDetection.objectsCollision(lion, carrot)){
-                    carrot.collitionDetected = true;
-                };
-            });
-            this.rabbits.forEach(rabbit=>{
-                if(CollisionDetection.objectsCollision(lion, rabbit)){
-                    rabbit.collitionDetected = true;
+    private checkCollisionByTriggerType(arrTriggers, arrTargets){
+        arrTriggers.forEach(triggerElem => {
+            arrTargets.forEach(collidedElem=>{
+                if(CollisionDetection.objectsCollision(triggerElem, collidedElem)){
+                    collidedElem.collitionDetected = true;
+                    triggerElem.executeCollisionWith(collidedElem.type);
                 };
             });
         });
     }
 
+    //only object that implement the interface move can trigger a collition
+    //therefore only lions and rabbits are evaluated
+    public checkCollisions(){
+        this.checkCollisionByTriggerType(this.rabbits, [...this.lakes, ...this.carrots]);
+        this.checkCollisionByTriggerType(this.lions, [...this.lakes, ...this.carrots, ...this.rabbits]);
+    }
+    
     public updatePosition():void{
         this.lions.forEach(lion=> lion.updatePosition(this.size));
         this.rabbits.forEach(lion=> lion.updatePosition(this.size));

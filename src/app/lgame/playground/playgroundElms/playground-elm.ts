@@ -1,6 +1,5 @@
 import { Point } from '../../lghelpers/point';
 import { Size } from '../../lghelpers/size';
-import { Printable } from '../../lghelpers/printable';
 
 export class PlaygroundElm {
     private _id: number;
@@ -13,17 +12,23 @@ export class PlaygroundElm {
     private _markForDeletion: boolean;
     private _moves: boolean;
     private _collitionDetected: boolean;
+    private _expandRate: number;
+    private _shrinkRate: number;
 
     constructor(_id: number = 0,
-        _position: Point = null,
-        _size: Size = null,
-        _type: string = "no type") {
+        position: Point = null,
+        size: Size = null,
+        type: string = "no type") {
             this.id = _id;
-            this.initialPosition = _position;
-            this.initialSize = _size;
-            this.type = _type;
+            this.initialPosition = position;
+            this.initialSize = size;
+            this.currentPosition = position;
+            this.currentSize = new Size(size.w, size.h);
+            this.type = type;
             this.drawingRequired = true;
             this.moves = false;
+            this.shrinkRate = 10;
+            this.expandRate =10;
     }
 
     public get id(): number {
@@ -37,7 +42,12 @@ export class PlaygroundElm {
         return this._currentPosition;
     }
     public set currentPosition(value: Point) {
-        this._currentPosition = value;
+        if(value){
+            this._currentPosition = new Point(value.x, value.y);
+        }
+        else{
+            this._currentPosition = value;
+        }
     }
 
     public get initialPosition(): Point {
@@ -92,9 +102,28 @@ export class PlaygroundElm {
         this._collitionDetected = value;
         this.update();
     }
+    public get expandRate(): number {
+        return this._expandRate/100;
+    }
+    public set expandRate(value: number) {
+        this._expandRate = value;
+    }
+    public get shrinkRate(): number {
+        return this._shrinkRate/100;
+    }
+    public set shrinkRate(value: number) {
+        this._shrinkRate = value;
+    }
+
     getCenterOfCurrentPosition() {
         return new Point(Math.round(this.currentPosition.x + this.currentSize.w / 2),
             Math.round(this.currentPosition.y + this.currentSize.h / 2));
+    }
+
+    getHalfOfSize(){
+        return new Size(
+            Math.round(this.currentSize.w/2), 
+            Math.round(this.currentSize.h/2));
     }
 
     //x1, y1, x2, y2
@@ -105,7 +134,38 @@ export class PlaygroundElm {
 
     update(){
         this.drawingRequired =true;
-        console.log("collision type: ", this.type, " mark for REDRAW: ", this.drawingRequired);
+    }
+
+    public shrink(): boolean {
+        //calculate object center
+        const centerPosition = this.getCenterOfCurrentPosition();
+
+        //adjust size:
+        this.currentSize.w = Math.round(this.currentSize.w * (1 - this.shrinkRate));
+        this.currentSize.h = Math.round(this.currentSize.h * (1 - this.shrinkRate));
+
+        //adjusts position
+        this.currentPosition.x = centerPosition.x - this.getHalfOfSize().w;
+        this.currentPosition.y = centerPosition.y - this.getHalfOfSize().h;
+
+        console.log("shrinking...", this.type);
+
+        return true;
+    }
+
+    public expand(): boolean {
+        //calculate object center
+        const centerPosition = this.getCenterOfCurrentPosition();
+
+        //adjust size:
+        this.currentSize.w = Math.round(this.currentSize.w * (1 + this.shrinkRate));
+        this.currentSize.h = Math.round(this.currentSize.h * (1 + this.shrinkRate));
+
+        //adjusts position
+        this.currentPosition.x = centerPosition.x - this.getHalfOfSize().w;
+        this.currentPosition.y = centerPosition.y - this.getHalfOfSize().h;
+
+        return true;
     }
 
 }

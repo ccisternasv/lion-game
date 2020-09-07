@@ -146,7 +146,7 @@ export class Settings {
         this.players.forEach(player => player.reactToKeyInstr(instr));
     }
 
-    public reactToBtnInstr(instr:string){
+    public reactToBtnInstr(instr:number){
         this.players.forEach(player => player.reactToBtnInstr(instr));
     }
     

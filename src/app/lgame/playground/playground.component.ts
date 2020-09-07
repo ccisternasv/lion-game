@@ -130,7 +130,7 @@ export class PlaygroundComponent implements OnInit {
     this.lgamecanvaslions.nativeElement.height=size.h;
   }
 
-  reactToBtnInst(instr:string){
+  reactToBtnInst(instr:number){
     this.settings.reactToBtnInstr(instr);
   }
 

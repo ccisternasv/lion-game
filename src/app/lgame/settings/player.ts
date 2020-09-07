@@ -45,13 +45,13 @@ export class Player {
 
     public reactToKeyInstr(key:string){
         const instr = this.keyboard.getInstrFromKey(key);
-         if(instr != "not supported" && this.lion){
+         if(instr != -1 && this.lion){
              this.lion.reactToInstr(instr);
          }
     }
 
-    public reactToBtnInstr(instr:string){
-        if(instr != "not supported" && this.lion){
+    public reactToBtnInstr(instr:number){
+        if(instr != -1 && this.lion){
             this.lion.reactToInstr(instr);
         }
     }

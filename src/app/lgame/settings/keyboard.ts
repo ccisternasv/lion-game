@@ -12,22 +12,18 @@ export class Keyboard {
         this.left = controls[3];
     }
 
-    isSupportedKey(key: String) {
-        return this.up == key || this.right == key || this.down == key || this.left ==key;
-    }
-
-    getInstrFromKey(key: String) {
+    getInstrFromKey(key: String):number {
         switch (key) {
             case this.up:
-                return "up";
+                return 0;
             case this.right:
-                return "right";
+                return 1;
             case this.down:
-                return "down";
+                return 2;
             case this.left:
-                return "left";
+                return 3;
             default:
-                return "not supported";
+                return -1;
         }
     }
 

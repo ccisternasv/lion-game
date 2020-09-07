@@ -24,14 +24,20 @@ export class ImagesLoader {
         this._lions = [];
         this._lions[0] = new Image();
         this._lions[1] = new Image();
+        this._lions[2] = new Image();
+        this._lions[3] = new Image();
+        this._lions[4] = new Image();
         this._rabbit = new Image();
         this._carrot = new Image();
         this._lake = new Image();
         this._lakeBg = new Image();
 
         this._lionsSrcs = [];
-        this._lionsSrcs[0]= baseImgsSrcPath +"lion.svg";
-        this._lionsSrcs[1]= baseImgsSrcPath +"lion_blue.svg";
+        this._lionsSrcs[0]= baseImgsSrcPath +"lion_center.png";
+        this._lionsSrcs[1]= baseImgsSrcPath +"lion_right.png";
+        this._lionsSrcs[2]= baseImgsSrcPath +"lion_center.png";
+        this._lionsSrcs[3]= baseImgsSrcPath +"lion_left.png";
+        this._lionsSrcs[4]= baseImgsSrcPath +"lion_blue.svg";
         this._rabbitSrc = baseImgsSrcPath +"rabbit.svg";
         this._carrotSrc = baseImgsSrcPath +"carrot.svg";
         this._lakeSrc = baseImgsSrcPath +"lake.svg";
@@ -40,8 +46,11 @@ export class ImagesLoader {
         this.imgsLoaded = false;
     }
 
-    public getlion(lion:number): HTMLImageElement {
-        return this._lions[lion];
+    public getlion(lion:number, direction:number): HTMLImageElement {
+        if(direction>-1){
+            return this._lions[direction];
+        }
+        return this._lions[0];
     }
     public get rabbit(): HTMLImageElement {
         return this._rabbit;
@@ -65,9 +74,11 @@ export class ImagesLoader {
     public loadImages():Promise<boolean>{
         let promises = [];
         try{
-            
             promises.push(this.createPromise(this._lions[0], this._lionsSrcs[0]));
             promises.push(this.createPromise(this._lions[1], this._lionsSrcs[1]));
+            promises.push(this.createPromise(this._lions[2], this._lionsSrcs[2]));
+            promises.push(this.createPromise(this._lions[3], this._lionsSrcs[3]));
+            promises.push(this.createPromise(this._lions[4], this._lionsSrcs[4]));
             promises.push(this.createPromise(this._rabbit, this._rabbitSrc));
             promises.push(this.createPromise(this._carrot, this._carrotSrc));
             promises.push(this.createPromise(this._lake, this._lakeSrc));
